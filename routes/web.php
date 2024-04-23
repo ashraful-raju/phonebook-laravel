@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\ContactController;
+use App\Http\Controllers\DetailController;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Route;
@@ -13,6 +14,9 @@ Route::middleware(['auth', 'verified'])->group(function(){
     Route::view('/dashboard', 'dashboard')->name('dashboard');
 
     Route::resource('contacts', ContactController::class);
+    Route::resource('contacts.detail', DetailController::class)->only([
+        'store', 'update', 'destroy'
+    ])->scoped();
 });
 
 Route::middleware('auth')->group(function () {
