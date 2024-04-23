@@ -32,6 +32,10 @@ class User extends Authenticatable
         'remember_token',
     ];
 
+    protected $appends = [
+        'photo'
+    ];
+
     /**
      * Get the attributes that should be cast.
      *
@@ -43,5 +47,13 @@ class User extends Authenticatable
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
         ];
+    }
+
+    function getPhotoAttribute() {
+        return 'https://ui-avatars.com/api/?name='.$this->name;
+    }
+
+    function contacts() {
+        return $this->hasMany(Contact::class);
     }
 }
