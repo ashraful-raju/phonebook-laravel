@@ -43,7 +43,7 @@
                 </x-contacts.details-item>
                 <x-contacts.details-item title="Addresses">
                     <ul>
-                        @foreach ($contact->address as $address)
+                        @foreach ($contact->addresses as $address)
                             <li class="mb-2">
                                 <p class="text-black font-bold">{{ ucfirst($address->type) }}</p>
                                 <p>{{ $address->getFullAddress(', ') }}</p>

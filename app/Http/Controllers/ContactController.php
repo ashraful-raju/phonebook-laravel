@@ -70,7 +70,7 @@ class ContactController extends Controller
      */
     public function show(Contact $contact)
     {
-        $contact->load(['address', 'details']);
+        $contact->load(['addresses', 'details']);
         return view('contacts.show', compact('contact'));
     }
 
@@ -79,7 +79,7 @@ class ContactController extends Controller
      */
     public function edit(Contact $contact)
     {
-        $contact->load(['address', 'details']);
+        $contact->load(['addresses', 'details']);
         return view('contacts.edit', compact('contact'));
     }
 

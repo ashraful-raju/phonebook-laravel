@@ -2,27 +2,26 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\DetailRequest;
 use App\Models\Contact;
 use App\Models\ContactDetail;
 use Illuminate\Http\Request;
 
 class DetailController extends Controller
 {
-    private function validate(Request $request) {
-        return $request->validate([
-            'type' => ['required', 'string'],
-            'data' => ['required', 'string']
-        ]);
-    }
-
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Contact $contact, Request $request)
+    public function store(Contact $contact, DetailRequest $request)
     {
-        $data = $this->validate($request);
+        // $request->all();
+        // $request->only(['']);
+        // $request->input('name')
+        // $request->get('search')
+        // $request->post('number')
+        // $request->file('photo')
 
-        $contact->details()->create($data);
+        $contact->details()->create($request->validated());
 
         return back()->with('alert', 'Contact details added successfully!');
     }
@@ -30,11 +29,9 @@ class DetailController extends Controller
     /**
      * Update a resource in storage.
      */
-    public function update(Request $request, Contact $contact, ContactDetail $detail)
+    public function update(DetailRequest $request, Contact $contact, ContactDetail $detail)
     {
-        $data = $this->validate($request);
-
-        $detail->update($data);
+        $detail->update($request->validated());
 
         return back()->with('alert', 'Contact details updated successfully!');
     }

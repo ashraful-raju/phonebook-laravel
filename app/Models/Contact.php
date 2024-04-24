@@ -48,7 +48,7 @@ class Contact extends Model
         return $query->where('user_id', auth()->id());
     }
 
-    function address() {
+    function addresses() {
         return $this->hasMany(Address::class);
     }
 
@@ -67,7 +67,7 @@ class Contact extends Model
     }
 
     function getHomeAddressAttribute() {
-        return $this->address->where('type', 'home')->first();
+        return $this->addresses->where('type', 'home')->first();
     }
 
     function getEmailAttribute() {

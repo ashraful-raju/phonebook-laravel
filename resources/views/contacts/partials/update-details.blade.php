@@ -48,18 +48,20 @@
         @endforeach
     </div>
     <hr class="mt-4" />
-    <form action="{{ route('contacts.detail.store', $contact->id) }}" method="POST">
-        <h4 class="mt-2 text-black font-semibold">Add new details</h4>
-        @csrf
-        <div class="flex items-end mt-3">
-            <input type="text"
-                class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block p-2.5 w-1/4"
-                placeholder="Enter Type" name="type" value="{{ old('type') }}" required>
-            <input type="text"
-                class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 ml-2"
-                placeholder="Enter Value" name="data" value="{{ old('value') }}" required />
+    <div x-data="{ open: false }">
+        <h4 class="mt-2 text-black font-semibold cursor-pointer" @click="open=!open">Add new details</h4>
+        <form action="{{ route('contacts.detail.store', $contact->id) }}" method="POST" x-show="open">
+            @csrf
+            <div class="flex items-end mt-3">
+                <input type="text"
+                    class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block p-2.5 w-1/4"
+                    placeholder="Enter Type" name="type" value="{{ old('type') }}" required>
+                <input type="text"
+                    class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 ml-2"
+                    placeholder="Enter Value" name="data" value="{{ old('value') }}" required />
 
-        </div>
-        <x-primary-button class="mt-2">Add new</x-primary-button>
-    </form>
+            </div>
+            <x-primary-button class="mt-2">Add new</x-primary-button>
+        </form>
+    </div>
 </section>
