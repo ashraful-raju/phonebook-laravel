@@ -13,9 +13,14 @@ class ContactController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        $contacts = Contact::paginate();
+        $contacts = Contact::when(
+            $request->has('search'),
+            function ($query) use ($request) {
+                $query->where('name', 'LIKE', "%$request->search%");
+            }
+        )->paginate();
 
         return view('contacts.index', [
             'contacts' => $contacts
@@ -37,24 +42,24 @@ class ContactController extends Controller
     {
         $validated = $request->validated();
 
-        if($request->hasfile('photo')){
+        if ($request->hasfile('photo')) {
             $validated['photo'] = $request->file('photo')->store('contacts');
         }
 
         $contact = Contact::create(
             Arr::only($validated, [
-                'name','title','company','notes','photo'
+                'name', 'title', 'company', 'notes', 'photo'
             ])
         );
 
-        if($request->has('mobile')){
+        if ($request->has('mobile')) {
             $contact->details()->create([
                 'type' => 'mobile',
                 'data' => $validated['mobile']
             ]);
         }
 
-        if($request->has('email')){
+        if ($request->has('email')) {
             $contact->details()->create([
                 'type' => 'email',
                 'data' => $validated['email']
@@ -62,7 +67,7 @@ class ContactController extends Controller
         }
 
         return redirect()->route('contacts.index')
-        ->with('alert', 'Contact added successfully!');
+            ->with('alert', 'Contact added successfully!');
     }
 
     /**
@@ -91,13 +96,13 @@ class ContactController extends Controller
         $validated = $request->validated();
         $oldImage = $contact->getRawOriginal('photo');
 
-        if($request->hasFile('photo')){
+        if ($request->hasFile('photo')) {
             $validated['photo'] = $request->file('photo')->store('contacts');
         }
 
         $contact->update($validated);
 
-        if($request->hasFile('photo') && $oldImage){
+        if ($request->hasFile('photo') && $oldImage) {
             Storage::delete($oldImage);
         }
 
